@@ -51,7 +51,7 @@ module hvsync_generator(clk, reset, hsync, vsync, display_on, hpos, vpos);
         if (vmaxxed)
           vpos <= 0;
         else 
-          vpos <= vpos + 1;
+          vpos <= vpos + 1;    // It requires 3 Clock Cycles for the or, if vmaxxed and if hmaxxed, to change vpos + delay.
     end 
 
   assign display_on = (hpos < H_DISPLAY) && (vpos < V_DISPLAY);
