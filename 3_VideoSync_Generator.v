@@ -24,7 +24,7 @@ module hvsync_generator(clk, reset, hsync, vsync, display_on, hpos, vpos);
   // derived constants
   parameter H_SYNC_START =   H_DISPLAY + H_FRONT;
   parameter H_SYNC_END   =   H_DISPLAY + H_FRONT + H_SYNC - 1;
-  parameter H_MAX        =   H_DISPLAY + H_BACK + H_FRONT + H_SYNC -1;
+  parameter H_MAX        =   H_DISPLAY + H_FRONT + H_BACK + H_SYNC -1;
   parameter V_SYNC_START =   V_DISPLAY + V_BOTTOM;
   parameter V_SYNC_END   =   V_DISPLAY + V_BOTTOM + V_SYNC - 1;
   parameter V_MAX        =   H_DISPLAY + H_BOTTOM + H_TOP + V_SYNC -1;
@@ -54,8 +54,7 @@ module hvsync_generator(clk, reset, hsync, vsync, display_on, hpos, vpos);
           vpos <= vpos + 1;    // It requires 3 Clock Cycles for the or, if vmaxxed and if hmaxxed, to change vpos + delay.
     end 
 
-  assign display_on = (hpos < H_DISPLAY) && (vpos < V_DISPLAY);
-
+_
 endmodule
 
 `endif
