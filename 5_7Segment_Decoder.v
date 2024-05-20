@@ -1,4 +1,4 @@
-`include "hvsync_generator.v"
+`include "3_VideoSync_Generator.v"
 
 module seven_segment_decoder(digit, segments);
 
@@ -75,7 +75,7 @@ module test_7segment_top(clk, reset, hsync, vsync, rgb);
 
   seven_segment_decoder decoder(
     .digit(digit),
-    .segments(segments)
+    .segments(segments),
   );
 
   segments_to_bitmap numbers(
