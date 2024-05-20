@@ -159,3 +159,46 @@ module digits10_array(digit, yofs, bits);
   end
 
 endmodule
+
+
+// test module
+
+module test_numbers_top (clk, reset, hsync, vsync, rgb);
+
+  input clk, reset;
+  output hsync, vsync;
+  output [2:0] rgb; 
+
+  wire display_on;
+  wire [8:0] hpos;
+  wire [8:0] vpos;
+
+  hvsync_generator hvsync_gen(
+    .clk(clk),
+    .reset(reset),
+    .hsync(hsync),
+    .vsync(vsync),
+    .display_on(display_on),
+    .hpos(hpos),
+    .vpos(vpos)
+  );
+
+  wire [3:0] digit = hpos [7:4];
+  wire [2:0] xofs = hpos [3:1];
+  wire [2:0] yofs = vpos [3:1];
+  wire [4:0] bits;
+
+  digits10_array(
+    .digit(digit), 
+    .yofs(yofs), 
+    .bits(bits)    
+  );
+
+  wire r = display_on && 0;
+  wire g = display_on && bits[xofs ^3'b111];
+  wire b = display_on && 0;
+  assign rgb = {b,g,r};
+
+endmodule
+
+`endif
