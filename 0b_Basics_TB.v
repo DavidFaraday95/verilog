@@ -33,11 +33,56 @@ module NOT1_TB;
         .a(A),
         .y(Y_beh)
     );
+/*
+    // UNIT UNDER TEST (gate)
+    nor2_gate UUT_nor2_gate(
+        .a(A), .b(B),
+        .y(Y_gate)
+    );
 
+    // UNIT UNDER TEST (dataflow)
+    nor2_dataflow UUT_nor2_dataflow(
+        .a(A), .b(B),
+        .y(Y_data)
+    );
+
+    // UNIT UNDER TEST (behavioral)
+    nor2_behavioral UUT_nor2_behavioral(
+        .a(A), .b(B),
+        .y(Y_beh)
+    );
+    
+*/
+    
+/*
+    // UNIT UNDER TEST (gate)
+    nand4_gate UUT_nand4_gate(
+        .a(A), .b(B), .c(C), .d(D),
+        .y(Y_gate)
+    );
+
+    // UNIT UNDER TEST (dataflow)
+    nand4_dataflow UUT_nand4_dataflow(
+        .a(A), .b(B), .c(C), .d(D),
+        .y(Y_data)
+    );
+
+    // UNIT UNDER TEST (behavioral)
+    nand4_behavioral UUT_nand4_behavioral(
+        .a(A), .b(B), .c(C), .d(D),
+        .y(Y_beh)
+    );
+*/ 
+
+    
     // SAVE EVERYTHING FROM TOP TB MODULE IN A DUMP FILE
     initial begin
         $dumpfile("not1_tb.vcd");
         $dumpvars(0, NOT1_TB);
+      //  $dumpfile("nor2_tb.vcd");
+      //  $dumpvars(0, NOR2_TB);
+      //  $dumpfile("nand4_tb.vcd");
+      //  $dumpvars(0, NAND4_TB);
     end
 
     // TICK PERIOD
@@ -53,11 +98,19 @@ module NOT1_TB;
 
         // OPEN VECTOR FILE - THROW AWAY FIRST LINE
         FD=$fopen("not1_tb.tv","r");
+        // FD=$fopen("nor2_tb.tv","r");
+        // FD=$fopen("nand4_tb.tv","r");
         COUNT = $fscanf(FD, "%s", COMMENT);
         // $display ("FIRST LINE IS: %s", COMMENT);
 
+        
+
+        
         // INIT TESTBENCH
-        COUNT = $fscanf(FD, "%s %b %b", COMMENT, A, YEXPECTED);
+        COUNT = $fscanf(FD, "%s %b %b", COMMENT, A, YEXPECTED); //  Not1
+        // COUNT = $fscanf(FD, "%s %b %b %b", COMMENT, A, YEXPECTED); //  Nor2
+        //  COUNT = $fscanf(FD, "%s %b %b %b %b %b", COMMENT, A, B, C, D, YEXPECTED); //  Nand4
+        
         TICK = 0;
         VECTORCOUNT = 1;
         ERRORS = 0;
@@ -68,8 +121,13 @@ module NOT1_TB;
         $display();
         $display("                                     GATE  DATA   BEH");
         $display("                 | TIME(ns) | A |  Y  |  Y  |  Y  |");
+        //  $display("                 | TIME(ns) | A |  B |  Y  |  Y  |  Y  |");
+        //  $display("                 | TIME(ns) | A |  B | C | D | Y  |  Y  |  Y  |");
         $display("                 ----------------------------------");
         // $monitor("%4d  %10s | %8d | %1d |  %1d  |  %1d  |  %1d  |", VECTORCOUNT, COMMENT, $time, A, Y_gate, Y_data, Y_beh);
+        // $monitor("%4d  %10s | %8d | %1d |  %1d  |  %1d  |  %1d  | %1d  |", VECTORCOUNT, COMMENT, $time, A, B, Y_gate, Y_data, Y_beh);
+        // $monitor("%4d  %10s | %8d | %1d | %1d | %1d | %1d |  %1d  |  %1d  |  %1d  |", VECTORCOUNT, COMMENT, $time, A, B, C, D, Y_gate, Y_data, Y_beh);
+
 
       // APPLY TEST VECTORS ON NEG EDGE TICK (ADD DELAY)
       always @(negedge TICK) begin
@@ -81,7 +139,7 @@ module NOT1_TB;
 
         // Check if EOF - PRINT SUMMARY, CLOSE VECTOR FILES AND FINISH TB
         if (COUNT == -1) begin
-            $fclose(FD);
+          $fclose(FD);
           $display();
           $display(" VECTORS: %4d", VECTORCOUNT);
           $display(" ERRORS: %4d", ERRORS);
@@ -99,8 +157,11 @@ module NOT1_TB;
       // CHECK TEST VECTORS ON POS EDGE TICK
       always @(posedge TICK) begin
         #5   // WAIT A BIT
-           // DISPLAY TEST VECTORS ON POS EDGE TICK
+    
+        // DISPLAY TEST VECTORS ON POS EDGE TICK
         $display("%4d %10s | %8d | %1d | %1d | %1d | %1d |", VECTORCOUNT, COMMENT, $time, A, Y_GATE, Y_data, Y_beh); 
+        // $display("%4d %10s | %8d | %1d | %1d | %1d | %1d | %1d |", VECTORCOUNT, COMMENT, $time, A, Y_GATE, Y_data, Y_beh); 
+        // $display("%4d  %10s | %8d | %1d | %1d | %1d | %1d |  %1d  |  %1d  |  %1d  |", VECTORCOUNT, COMMENT, $time, A, B, C, D, Y_gate, Y_data, Y_beh);
 
         //Check each Vector result
         if (Y_gate != YEXPECTED) begin
