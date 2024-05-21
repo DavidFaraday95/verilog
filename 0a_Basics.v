@@ -32,6 +32,41 @@ module not1_behavioral(
 endmodule
 
 --------------------------------
+--      Nor2 Gate              --
+--------------------------------
+
+module nor2_gate(
+  input a,b, // 2-input
+  output y
+);
+
+  nor (y, a,b); // Gate primitive
+
+end module
+    
+module nor2_dataflow(
+  input a,b, // 2-input
+  output y
+);
+
+  assign y = ~ (a | b); // Dataflow, Contineous Assignment Statement
+
+end module
+
+
+module nor2_behavioral(
+input a,b // 2-input
+output y
+);
+
+  always @ (a or b ) begin
+
+    y = ~ (a | b); 
+  end
+  
+end module
+  
+--------------------------------
 --      Nand4 Gate              --
 --------------------------------
 
@@ -49,7 +84,7 @@ module nand4_dataflow(
   output y
 );
 
-  assign y = ~ a & b & c & d); // Dataflow, Contineous Assignment Statement
+  assign y = ~ (a & b & c & d); // Dataflow, Contineous Assignment Statement
 
 end module
 
@@ -61,8 +96,7 @@ output y
 
   always @ (a or b or c or d) begin
 
-    y = ~ a & b & c & d); 
+    y = ~ (a & b & c & d); 
   end
   
 end module
-  
