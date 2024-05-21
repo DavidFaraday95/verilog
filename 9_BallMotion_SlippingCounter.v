@@ -80,7 +80,7 @@ module ball_slip_counter_top(clk, reset, hsync, vsync, rgb);
           if (reset)
             ball_vertical_move <= 4'd9;
           else
-            ball_vertical_move <= (4'd9 ^ 4'd11) ^ ball_vert_move;
+            ball_vertical_move <= (4'd9 ^ 4'd11) ^ ball_vertical_move;
         end
 
       -- horizontal bounce
