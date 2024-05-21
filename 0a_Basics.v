@@ -31,3 +31,38 @@ module not1_behavioral(
   
 endmodule
 
+--------------------------------
+--      Nand4 Gate              --
+--------------------------------
+
+module nand4_gate(
+  input a,b,c,d, // 4-input
+  output y
+);
+
+  nand (y, a,b,c,d); // Gate primitive
+
+end module
+    
+module nand4_dataflow(
+  input a,b,c,d, // 4-input
+  output y
+);
+
+  assign y = ~ a & b & c & d); // Dataflow, Contineous Assignment Statement
+
+end module
+
+
+module nand4_behavioral(
+input a,b,c,d, // 4-input
+output y
+);
+
+  always @ (a or b or c or d) begin
+
+    y = ~ a & b & c & d); 
+  end
+  
+end module
+  
