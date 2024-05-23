@@ -146,46 +146,45 @@ module CPU(clk, reset, address, data_in, data_out, write);
           state <= S_DECODE;
         end
 
-        // State2: read/decode opcode
-        S_DECODE: begin
-          opcode <= data_in;
-          casez (datain)
-            // Alu A + B -> dest
-            8'b00??????: begin
-              state <= S_COMPUTE;
-            end
-            // ALU A + immediate -> dest
-            8'b01??????: begin
-              address <= IP;
-              IP <= IP + 1;
-              state <= S_COMPUTE;
-            end
-            // ALU A + read [B] -> dest
-            8'b11??????: begin
-              address <= B;
-              state <= S_COMPUTE;
-            end
-            // ALU A + write  [nnnn] -> dest
-            8'b1001????: begin
-              address <= {4'b0, data_in[3:0]};
-              data_out <= A;
-              write <= 1;
-              state <= S_SELECT;
-            end
-            // Swap A, B
-            8'b10000001: begin
-              A <= B;
-              B <= A;
-              state <= S_SELECT;
-            end
+      // State2: read/decode opcode
+      S_DECODE: begin
+        opcode <= data_in;
+        case (datain)
+          // Alu A + B -> dest
+          8'b00??????: begin
+            state <= S_COMPUTE;
+          end
+          // ALU A + immediate -> dest
+          8'b01??????: begin
+            address <= IP;
+            IP <= IP + 1;
+            state <= S_COMPUTE;
+          end
+          // ALU A + read [B] -> dest
+          8'b11??????: begin
+            address <= B;
+            state <= S_COMPUTE;
+          end
+          // ALU A + write  [nnnn] -> dest
+          8'b1001????: begin
+            address <= {4'b0, data_in[3:0]};
+            data_out <= A;
+            write <= 1;
+            state <= S_SELECT;
+          end
+          // Swap A, B
+          8'b10000001: begin
+            A <= B;
+            B <= A;
+            state <= S_SELECT;
+          end
 
-            // Conditional Branch
-            8'b1010????
-        end case: begin
-          if (
+          // Conditional Branch
+          8'b1010???? begin
+            if (
             (data_in[0] && (data_in[1] == carry)) ||
             (data_in[2] && (data_in[3] == zero)) 
-          )
+            )
           begin
             address <= IP;
             state <= S_READ_IP;
@@ -193,13 +192,14 @@ module CPU(clk, reset, address, data_in, data_out, write);
             state <= S_SELECT;
           end
           IP <= IP + 1;  // skip immediate
-      end
+    end
       // fall-through reset
       default: begin
         state <= S_RESET;
       end
     endcase
   end
+  // state 3: compute ALU op and flags
   S_COMPUTE: begin
     // transfer ALU output to destination
     case (opdest)
@@ -216,11 +216,12 @@ module CPU(clk, reset, address, data_in, data_out, write);
       // repeat CPU loop
       state <= S_SELECT;
       end
-  
-      S_READ_IP: begin
-        IP <= data_in;
-        state <= S_SELECT;
-      end
+    // state 4: read new IP from memory (immediate mode)
+
+    S_READ_IP: begin
+      IP <= data_in;
+      state <= S_SELECT;
+    end
     endcase
   end        
       
