@@ -196,21 +196,27 @@ module CPU(clk, reset, address, data_in, data_out, write);
       end
       // fall-through reset
       default: begin
-        // transfer ALU output to destination
-        case (opdest)
-          `DEST_A: A <= Y[7:0];
-          `DEST_B: B <= Y[7:0];
-          `DEST_IP: IP <= Y[7:0];
-          `DEST_NOP: ;
-        endcase
-        // set carry for certain operations (4-7, 12-15)
-        if (aluop[2]) carry <= Y[8];
-        // set zero flag
-        zero <= ~|Y[7:0];
-        // repeat CPU loop
-        state <= S_SELECT;
+        state <= S_RESET;
       end
-
+    endcase
+  end
+  S_COMPUTE: begin
+    // transfer ALU output to destination
+    case (opdest)
+      `DEST_A: A <= Y[7:0];
+      `DEST_B: B <= Y[7:0];
+      `DEST_IP: IP <= Y[7:0];
+      `DEST_NOP: ;
+    endcase
+    // set carry for certain operations (4-7, 12-15)
+  
+      if (aluop[2]) carry <= Y[8];
+      // set zero flag
+      zero <= ~|Y[7:0];
+      // repeat CPU loop
+      state <= S_SELECT;
+      end
+  
       S_READ_IP: begin
         IP <= data_in;
         state <= S_SELECT;
