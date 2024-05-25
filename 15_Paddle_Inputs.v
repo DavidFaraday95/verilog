@@ -13,18 +13,21 @@ module paddles_top (clk, reset, hsync, vsync, hpaddle, vpaddle, rgb);
 
   reg [7:0] player_x;
   reg [7:0] player_y;
+  reg [7:0] paddle_x;
+  reg [7:0] paddle_y;
 
   // read horizontal paddle
-  always @(posedge hpaddle)
-    paddle_x <= vpos[7:0];
+  always @(posedge hpaddle)      // Input transition, Speichertransfer
+    paddle_x <= vpos[7:0];       // Speicher <= wire
 
-  always @(posedge vpaddle)
-    paddle_y <= vpos[7:0];
+  // read vertical paddle 
+  always @(posedge vpaddle)      // Input transition, Speichertransfer
+    paddle_y <= vpos[7:0];       // Speicher <= wire
 
   always @(posedge vsync)
     begin
-    player_y <= paddle_x;
-    player_y <= paddle_y;
+      player_y <= paddle_x;      // Inputs auf Register geladen
+      player_y <= paddle_y;      // Inputs auf Register geladen
     end
 
   hvsync_generator hvsync_gen(
@@ -37,11 +40,11 @@ module paddles_top (clk, reset, hsync, vsync, hpaddle, vpaddle, rgb);
     .vpos(vpos)
   );
 
-
+  // display paddle positions on screen
   wire h = hpos [7:0] >= paddle_x;
   wire v = vpos [7:0] >= paddle_y;
 
-  assign rgb = {1'b00, display_on && h, display_on && v}
+  assign rgb = {1'b0, display_on && h, display_on && v};
 
-    endmodule
+endmodule
     
