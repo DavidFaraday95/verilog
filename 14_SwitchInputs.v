@@ -22,12 +22,12 @@ module switches_top(clk, reset, hsync, vsyncm switches_p1, switches_p2, rgb);
   );
 
 
-  wire p1gfx = switches_p1[vpos[7:5]];
-  wire p2gfx = switches_p2[hpos[7:5]];
+  wire p1gfx = switches_p1[vpos[7:5]];    // wire <= Input
+  wire p2gfx = switches_p2[hpos[7:5]];    // wire <= Input
 
   assign rgb = {1'b0,
-                display_on && p1gfx,
-                display_on && p2gfx
+                display_on && p1gfx,      // Condition display_on  and  wire
+                display_on && p2gfx       // Condition display_on  and  wire
                };
 
 endmodule
