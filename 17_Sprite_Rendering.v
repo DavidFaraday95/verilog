@@ -12,12 +12,12 @@ module sprite_renderer(clk, vstart, load, hstart, rom_addr, rom_bits,
                          gfx, in_progress);
   
   input clk;
-  input vstart;		   // start drawing (top border)
-  input load;		     // ok to load sprite data?
-  input hstart;		   // start drawing scanline (left border)
+  input vstart;		  	// start drawing (top border)
+  input load;		     	// ok to load sprite data?
+  input hstart;		   	// start drawing scanline (left border)
   output reg [3:0] rom_addr;	// select ROM address
-  input [7:0] rom_bits;		    // input bits from ROM
-  output reg gfx;		          // output pixel
+  input [7:0] rom_bits;		// input bits from ROM
+  output reg gfx;		// output pixel
   output in_progress;	        // 0 if waiting for vstart
   
   reg [2:0] state;	 // current state #
@@ -50,21 +50,21 @@ module sprite_renderer(clk, vstart, load, hstart, rom_addr, rom_bits,
         end
         
         WAIT_FOR_LOAD: begin
-          xcount <= 0; // initialize horiz. count
-	           gfx <= 0;
-                              // wait for load, then next state
-          if (load)
+           xcount <= 0; // initialize horiz. count
+	   gfx <= 0;
+           // wait for load, then next state
+           if (load)
             state <= LOAD1_SETUP;
         end
         
         LOAD1_SETUP: begin
-        rom_addr<= ycount; // load ROM address
-          state <= LOAD1_FETCH;
+           rom_addr <= ycount; // load ROM address
+           state    <= LOAD1_FETCH;
         end
         
         LOAD1_FETCH: begin
-	      outbits <= rom_bits;  // latch bits from ROM
-          state <= WAIT_FOR_HSTART;
+	   outbits <= rom_bits;  // latch bits from ROM
+           state   <= WAIT_FOR_HSTART;
         end
 
         WAIT_FOR_HSTART: begin
@@ -87,7 +87,7 @@ module sprite_renderer(clk, vstart, load, hstart, rom_addr, rom_bits,
           end
         end
         default: begin
-          state <= WAIT_FOR_VSTART;
+              state <= WAIT_FOR_VSTART;
         end
       endcase
     end
