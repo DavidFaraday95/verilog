@@ -77,12 +77,12 @@ module racing_game_top(clk, hsync, vsync, rgb, hpaddle, vpaddle);
   sprite_renderer player_renderer(
     .clk(clk), 
     .vstart(player_vstart), 
-    load(player_load), 
-    hstart(player_hstart), 
-    rom_addr(player_sprite_yofs), 
-    rom_bits(car_sprite_bits), 
-    gfx(player_gfx), 
-    in_progress(player_is_drawing)
+    .load(player_load), 
+    .hstart(player_hstart), 
+    .rom_addr(player_sprite_yofs), 
+    .rom_bits(car_sprite_bits), 
+    .gfx(player_gfx), 
+    .in_progress(player_is_drawing)
     );
   
   sprite_renderer enemy_renderer(
@@ -110,19 +110,29 @@ module racing_game_top(clk, hsync, vsync, rgb, hpaddle, vpaddle);
       player_y <= 180;
       track_pos <= track_pos + {11'b0,speed[7:4]};
       enemy_y <= enemy_y + {3'b0, speed[7:4]};
+
+
       if (enemy_hit_edge)
         enemy_dir <= !enemy_dir;
+
+
       if (enemy_dir ^ enemy_hit_edge)
         enemy_x <= enemy_x + 1;
       else
         enemy_x <= enemy_x - 1;
       // collision check?
+
+
       if (frame_collision)
         speed <= 16;
+
       else if (speed < ~paddle_y)
         speed <= speed + 1;
+
       else
         speed <= speed - 1;
+
+
     end
   
   // set to 1 when player collides with enemy or track

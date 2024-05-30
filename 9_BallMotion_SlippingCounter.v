@@ -53,6 +53,7 @@ module ball_slip_counter_top(clk, reset, hsync, vsync, rgb);
         ball_htimer <= ball_htimer + 1;
     end
 
+
   // update vertical timer
   always @(posedge hsync or posedge ball_reset)
     begin
@@ -62,6 +63,7 @@ module ball_slip_counter_top(clk, reset, hsync, vsync, rgb);
         ball_vtimer <= ball_vtimer + 1;
     end
 
+
   // reset ball position
       always @(posedge clk or posedge reset)
         begin
@@ -70,6 +72,7 @@ module ball_slip_counter_top(clk, reset, hsync, vsync, rgb);
           else if (hpos == 128 && vpos == 128)
             ball_reset <= 0;
         end
+
 
       wire ball_vertical_collide = ball_vgfx && vpos >= 240;
       wire ball_horizontal_collide = ball_hgfx && hpos >= 256 && vpos == 255;

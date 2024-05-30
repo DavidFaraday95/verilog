@@ -49,29 +49,34 @@ module sprite_renderer(clk, vstart, load, hstart, rom_addr, rom_bits,
             state <= WAIT_FOR_LOAD;
         end
         
+
         WAIT_FOR_LOAD: begin
            xcount <= 0; // initialize horiz. count
-	   gfx <= 0;
+	         gfx <= 0;
            // wait for load, then next state
            if (load)
             state <= LOAD1_SETUP;
         end
         
+
         LOAD1_SETUP: begin
            rom_addr <= ycount; // load ROM address
            state    <= LOAD1_FETCH;
         end
         
+
         LOAD1_FETCH: begin
 	   outbits <= rom_bits;  // latch bits from ROM
            state   <= WAIT_FOR_HSTART;
         end
+
 
         WAIT_FOR_HSTART: begin
           // wait for hstart, then start drawing
         if (hstart)
           state <= DRAW;
         end
+
 
         DRAW: begin
           // get pixel, mirroring graphics left/right
@@ -147,7 +152,7 @@ module sprite_render_test_top(clk, hsync, vsync, rgb, hpaddle, vpaddle);
     .rom_addr(car_sprite_addr), 
     .rom_bits(car_sprite_bits), 
     .gfx(car_gfx), 
-    in_progress(in_progress)
+    .in_progress(in_progress)
   );
 
   always @(posedge hpaddle)

@@ -15,7 +15,7 @@ These two modules are functionally equivalent
 module digits10_case(digit, yofs, bits);
   input [3:0] digit;
   input [2:0] yofs;
-  output reg [4:0] bits
+  output reg [4:0] bits;
 
   wire [6:0] caseexpr = {digit, yofs};
 

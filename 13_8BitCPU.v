@@ -92,8 +92,8 @@ tttt = flags test for conditional branch
 `define I_CLEAR_ZERO `I_COMPUTE(`DEST_NOP, `OP_ZERO)
 
 module CPU(clk, reset, address, data_in, data_out, write);
-  input     clk;
-  input     reset;
+  input clk;
+  input reset;
   output reg[7:0]  address;
   input[7:0]  data_in;
   output reg[7:0]  data_out;
@@ -133,11 +133,15 @@ module CPU(clk, reset, address, data_in, data_out, write);
     end else begin
       case (state)
         // State0: reset
+
+
         S_RESET: begin
           IP <= 8'h80;
           write <= 0;
           state <= S_SELECT;
         end
+
+
         // State1: select the opcode address
         S_SELECT: begin
           address <= IP;
@@ -146,25 +150,34 @@ module CPU(clk, reset, address, data_in, data_out, write);
           state <= S_DECODE;
         end
 
-      // State2: read/decode opcode
-      S_DECODE: begin
-        opcode <= data_in;
+
+        // State2: read/decode opcode
+        S_DECODE: begin
+          opcode <= data_in;
+
+
         case (datain)
           // Alu A + B -> dest
           8'b00??????: begin
             state <= S_COMPUTE;
           end
+
+
           // ALU A + immediate -> dest
           8'b01??????: begin
             address <= IP;
             IP <= IP + 1;
             state <= S_COMPUTE;
           end
+
+
           // ALU A + read [B] -> dest
           8'b11??????: begin
             address <= B;
             state <= S_COMPUTE;
           end
+
+
           // ALU A + write  [nnnn] -> dest
           8'b1001????: begin
             address <= {4'b0, data_in[3:0]};
@@ -172,12 +185,15 @@ module CPU(clk, reset, address, data_in, data_out, write);
             write <= 1;
             state <= S_SELECT;
           end
+
+
           // Swap A, B
           8'b10000001: begin
             A <= B;
             B <= A;
             state <= S_SELECT;
           end
+
 
           // Conditional Branch
           8'b1010???? begin
@@ -188,40 +204,50 @@ module CPU(clk, reset, address, data_in, data_out, write);
           begin
             address <= IP;
             state <= S_READ_IP;
-          end else begin
+          end 
+          
+          
+          else begin
             state <= S_SELECT;
           end
           IP <= IP + 1;  // skip immediate
+
+
     end
+
       // fall-through reset
       default: begin
         state <= S_RESET;
       end
     endcase
   end
-  // state 3: compute ALU op and flags
-  S_COMPUTE: begin
-    // transfer ALU output to destination
-    case (opdest)
-      `DEST_A: A <= Y[7:0];
-      `DEST_B: B <= Y[7:0];
-      `DEST_IP: IP <= Y[7:0];
-      `DEST_NOP: ;
-    endcase
-    // set carry for certain operations (4-7, 12-15)
-  
-      if (aluop[2]) carry <= Y[8];
-      // set zero flag
-      zero <= ~|Y[7:0];
-      // repeat CPU loop
-      state <= S_SELECT;
-      end
-    // state 4: read new IP from memory (immediate mode)
+        // state 3: compute ALU op and flags
+        S_COMPUTE: begin
+          // transfer ALU output to destination
+          case (opdest)
+            `DEST_A: A <= Y[7:0];
+            `DEST_B: B <= Y[7:0];
+            `DEST_IP: IP <= Y[7:0];
+            `DEST_NOP: ;
+          endcase
 
-    S_READ_IP: begin
-      IP <= data_in;
-      state <= S_SELECT;
-    end
+
+          // set carry for certain operations (4-7, 12-15)
+            if (aluop[2]) carry <= Y[8];
+            // set zero flag
+            zero <= ~|Y[7:0];
+            // repeat CPU loop
+            state <= S_SELECT;
+            end
+
+
+          // state 4: read new IP from memory (immediate mode)
+          S_READ_IP: begin
+            IP <= data_in;
+            state <= S_SELECT;
+          end
+
+
     endcase
   end        
       
@@ -272,7 +298,7 @@ module test_CPU_top(
   initial begin
 `ifdef EXT_INLINE_ASM
     rom = '{
-      __asm
+    __asm
 
 .arch femto8
 .org 128
@@ -288,7 +314,7 @@ Loop:
       bcc Loop   :    repeat until carry set
       reset      :    end of loop: reset CPU
 
-        __endasm
+      __endasm
     };
 `endif
   end
