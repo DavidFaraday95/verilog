@@ -131,7 +131,7 @@ module sprite_render_test_top(clk, hsync, vsync, rgb, hpaddle, vpaddle);
   car_bitmap car(
     .yofs(car_sprite_addr),
     .bits(car_sprite_bits))
-  )
+  );
 
   wire vstart = {1'b0.player_y} == vpos;
   wire hstart = {1'b0.player_x} == hpos;

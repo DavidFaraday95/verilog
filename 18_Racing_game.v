@@ -88,12 +88,12 @@ module racing_game_top(clk, hsync, vsync, rgb, hpaddle, vpaddle);
   sprite_renderer enemy_renderer(
     .clk(clk), 
     .vstart(enemy_vstart), 
-    load(enemy_load), 
-    hstart(enemy_hstart), 
-    rom_addr(enemy_sprite_yofs), 
-    rom_bits(car_sprite_bits), 
-    gfx(enemy_gfx), 
-    in_progress(enemy_is_drawing)
+    .load(enemy_load), 
+    .hstart(enemy_hstart), 
+    .rom_addr(enemy_sprite_yofs), 
+    .rom_bits(car_sprite_bits), 
+    .gfx(enemy_gfx), 
+    .in_progress(enemy_is_drawing)
     );
 
    // signals for enemy bouncing off left/right borders  

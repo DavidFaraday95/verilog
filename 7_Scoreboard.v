@@ -53,7 +53,7 @@ module scoreboard_generator(score0, score1, lives, vpos, hpos, board_gfx);
       case (hpos[7:5])
         1: score_digit = score1;
         2: score_digit = score0;
-        6: score_digit = lives
+        6: score_digit = lives;
         default: score_digit = 15; // no digit
 
       end case
@@ -65,7 +65,7 @@ module scoreboard_generator(score0, score1, lives, vpos, hpos, board_gfx);
           .bits(score_bits)
         );
 
-        assign board_gfx = score_bits[hpos[4:2 ] ^ 3'b111 ]
+        assign board_gfx = score_bits[hpos[4:2] ^ 3'b111 ]
 
   endmodule
 
