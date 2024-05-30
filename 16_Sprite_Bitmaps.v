@@ -21,21 +21,21 @@ module car_bitmap (yofs, bits);
 
   initial beign 
     bitarray[0] = 8'b0;
-  bitarray[1] = 8'b1100;
-  bitarray[2] = 8'b11001100;
-  bitarray[3] = 8'b11111100;
-  bitarray[4] = 8'b11101100;
-  bitarray[5] = 8'b11000000;
-  bitarray[6] = 8'b1110000;
-  bitarray[7] = 8'b1110000;
-  bitarray[8] = 8'b111000;
-  bitarray[9] = 8'b111000;
-  bitarray[10] = 8'b110000;
-  bitarray[11] = 8'b1101110;
-  bitarray[12] = 8'b11101110;
-  bitarray[13] = 8'b11111110;
-  bitarray[14] = 8'b11101110;
-  bitarray[15] = 8'b101110;
+    bitarray[1] = 8'b1100;
+    bitarray[2] = 8'b11001100;
+    bitarray[3] = 8'b11111100;
+    bitarray[4] = 8'b11101100;
+    bitarray[5] = 8'b11000000;
+    bitarray[6] = 8'b1110000;
+    bitarray[7] = 8'b1110000;
+    bitarray[8] = 8'b111000;
+    bitarray[9] = 8'b111000;
+    bitarray[10] = 8'b110000;
+    bitarray[11] = 8'b1101110;
+    bitarray[12] = 8'b11101110;
+    bitarray[13] = 8'b11111110;
+    bitarray[14] = 8'b11101110;
+    bitarray[15] = 8'b101110;
 
   end
 
@@ -80,7 +80,7 @@ module sprite_bitmap_top (clk, reset, hsync, vsync, rgb);
   else if (car_sprite_yofs != 0)
     car_sprite_yofs <= car_sprite_yofs - 1;
 
-  // restart x counter whne we hit the left border (player_x) 
+  // restart x counter when we hit the left border (player_x) 
 
   always @(posedge vsync) 
     if (hpos == player_x)
@@ -91,7 +91,7 @@ module sprite_bitmap_top (clk, reset, hsync, vsync, rgb);
   // mirror sprite in X direction
 
   wire [3:0] car_bit = car_sprite_xofs>= 8? 
-                                    15- car_sprite_xofs;
+                                    15 - car_sprite_xofs;
                                     car_sprite_xofs;
   wire car_gfx = car_sprite_bits[car_bit[2:0]];
 
