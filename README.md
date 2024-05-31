@@ -7,3 +7,10 @@ Thus the source code originated from the book "DESIGNING VIDEO GAME HARDWARE IN 
 <br> Later: https://8bitworkshop.com/v3.9.0/?platform=verilog&file=cpu6502.v
 <br> Cool RISCV Implementation from Berkeley Student: 
 <br> https://github.com/T-K-233/RISC-V-Single-Cycle-CPU/tree/main/BA20X-Verilog)
+
+# VHDL learning # 
+<br> https://nandland.com/arrays/
+<br> https://github.com/MJoergen/nexys4ddr/tree/master/dyoc/Episodes
+<br> https://github.com/MiSTer-devel/Wiki_MiSTer/wiki/Cores
+
+In general https://opencores.org offers many interfaces, which can be modified.
